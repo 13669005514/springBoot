@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <!--查询全部用户信息-->
+    <select id="selectUsers" resultType="com.example.pojo.User">
+        select id,loginName,password,name,head from user
+    </select>
+    <!--新增用户信息-->
+    <insert id="insertUser" parameterType="com.example.pojo.User">
+        insert into user(loginName,password,name,head) values(#{loginName},#{password},#{name},#{head})
+    </insert>
+
+    <!--更改用户信息-->
+    <update id="updateUser" parameterType="com.example.pojo.User">
+        update user
+        set loginName=#{loginName},password=#{password},name=#{name},head=#{head}
+        where id=#{id}
+    </update>
+    <!--删除用户信息-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where id =#{id}
+    </delete>
+
+</mapper>
