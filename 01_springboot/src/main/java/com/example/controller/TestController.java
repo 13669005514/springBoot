@@ -25,9 +25,9 @@ public class TestController {
         for (int i = 0; i < 10; i++) {
             integers.add(i);
         }
-        HashMap<String, List<Integer>> map = new HashMap<>(15);
-        map.put("hello",integers);
-        return map;
+        HashMap<String, List<Integer>> map2 = new HashMap<>(15);
+        map2.put("hello",integers);
+        return map2;
     }
 
 
