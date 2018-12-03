@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>addTitle</title>
+</head>
+<body>
+
+    <form action="user" method="post">
+        用户名：<input type="text" name="name"/><span color="red" th:errors="${user.name}" ></span>  <br>
+        密码：<input type="password" name="password"><span color="red" th:errors="${user.password}" ></span> <br>
+        年龄：<input type="text" name="age"><span color="red" th:errors="${user.age}" ></span><br>
+
+        <input type="submit" value="登录">
+    </form>
+</body>
+</html>
