@@ -10,31 +10,28 @@ import java.util.*;
  */
 public class  LineUtil{
 
-    public static int index = 97;
+    public static int index = 96;
 
     public static String getLine (String str, Map<String,Integer> map) {
-        String[] strarray = str.split(" ");
+        String[] strarray = str.trim().split(" ");
         List<String> tmp = new ArrayList<String>();
         for (int i = 0; i < strarray.length; i++) {
             if (strarray[i] != null && strarray[i].length() != 0) {
                 tmp.add(strarray[i]);
-                System.out.println(strarray[i]);
             }
         }
         int i = tmp.indexOf("=");
         boolean key = map.containsKey(tmp.get(i - 1));
+        System.out.println(tmp.get(i - 1));
         //
         if (key) {
-
+            index=map.get(tmp.get(i - 1));
         } else {
-
-
+            index+=1;
+            map.put(tmp.get(i - 1),index);
         }
-
-
-
-        tmp.set(i - 1, "a ");
-
+        String variableName = String.valueOf((char)index);
+        tmp.set(i - 1, variableName);
 
         StringBuilder sb = new StringBuilder();
         for (String s : tmp) {
@@ -44,11 +41,19 @@ public class  LineUtil{
         return sb.toString();
     }
 
+
+
     public static void main(String[] args) {
         String str = "  RedisTemplate<String, Object> template = new RedisTemplate<>();";
         //Set<String> set = new HashSet<String>();
-        Map<String,Integer> map = new HashMap<String, Integer>();
-        getLine(str,map);
+//        Map<String,Integer> map = new HashMap<String, Integer>();
+//        getLine(str,map);
+        int i = 97;
+        String s = String.valueOf((char)i);
+
+        System.out.println(s);
+
+
 
 
     }

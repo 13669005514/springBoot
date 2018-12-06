@@ -8,30 +8,20 @@ import java.util.regex.Pattern;
 
 /**
  * @Description:
+ * 实现对java文件注释删除和变量名替换为(a-z)的思路:
+ * 1.去掉多行注释 单行注释
+ * 2.去掉行尾注释
+ * 3.提取等号左边定义的变量名 并且修改成新的变量名
+ * 4.将旧变量名称和新变量名称存放到map中
+ * 5.最后对文件中未修改的变量名进行从map中匹配修改
  * @Auther: zhangfx
  * @Date: 2018/12/5/ 17:08
  */
-public class Demo {
-
-     static Pattern pattern1 = null;
-    // 清空已有的文件内容，以便下次重新写入新的内容
-    public static void clearInfoForFile() {
-        File file =new File("H:/1205/NewRedisConfig.java");
-        try {
-            if(!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fileWriter =new FileWriter(file);
-            fileWriter.write("");
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+public class Demo4 {
 
     public static void main(String[] args) throws Exception {
-        clearInfoForFile();//清空要写入的文件里的内容
+        //清空要写入的文件里的内容
+        FileUtil.clearInfoForFile();
         //1.读取文件内容(一行一行读取内容)
         FileInputStream fis=new FileInputStream("H:/1205/RedisConfig.java");
         InputStreamReader isr=new InputStreamReader(fis, "GBK");
@@ -40,7 +30,6 @@ public class Demo {
         //用于存储变量名集合
         Map<String, Integer> map = new HashMap<>();
         while ((line=br.readLine())!=null) {
-            //System.out.println(line);
             //替换多行和单行注释
             String lineTrim = line.trim();
             boolean a = lineTrim.startsWith("/*");
@@ -51,24 +40,19 @@ public class Demo {
             }
             //替换行尾注释
             if (line.indexOf("//") != -1) {
-                pattern1 = Pattern.compile("//(.*)");    //特征是所有以双斜线开头的
-                Matcher matcher1 = pattern1.matcher(line);
-                line = matcher1.replaceAll("");  //替换第一种注释
+                line = RowUtil.removeEndComment(line);
             }
-            //查找所有变量
+            //查找所有定义的变量 并替换变量名称
             if (line.indexOf("=") != -1 && line.indexOf(";") != -1) {
-                System.out.println(line);
-                line = LineUtil.getLine(line, map);
+                line = RowUtil.getVariableNames(line, map);
             }
             //将修改后的内容写入文件中
             FileUtil.writeFile(line);
         }
-        //关闭所有流
         br.close();
         isr.close();
         fis.close();
-
-        //将未替换的变量名进行替换
+        //对文件中未修改的变量名进行从map中匹配修改
         FileUtil.replacTextContent(map);
     }
 
