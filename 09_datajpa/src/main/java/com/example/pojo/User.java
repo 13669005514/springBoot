@@ -1,6 +1,8 @@
 package com.example.pojo;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Description:
@@ -20,6 +22,16 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "role_id")//外键
+    private Role role;
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_new",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "new_id"))
+    private Set<New> news = new HashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -43,6 +55,24 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public User setRole(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public Set<New> getNews() {
+        return news;
+    }
+
+    public User setNews(Set<New> news) {
+        this.news = news;
+        return this;
     }
 
     @Override
